@@ -6,12 +6,12 @@ module.exports = class MonoContextual extends Nanocomponent {
   constructor () {
     super()
 
-    this.handleResize = () => throttle(this.rerender, 100)()
+    this.handleResize = throttle(() => this.rerender(), 100)
   }
 
   load (element) {
     if (this.props.disabled) return
-    this.handleResize()
+    this.rerender()
     window.addEventListener('resize', this.handleResize)
   }
 
@@ -70,7 +70,7 @@ module.exports = class MonoContextual extends Nanocomponent {
 }
 
 function throttle(fn, timeout) {
-  var timer = null;
+  var timer = null
   return function () {
     if (!timer) {
       timer = setTimeout(function() {
