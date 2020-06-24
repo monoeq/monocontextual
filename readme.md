@@ -52,5 +52,5 @@ var element = monocon.render({
 ## See Also
 
 - [choojs/nanocomponent](https://github.com/choojs/nanocomponent)
-- [jongacnik/monolazy](https://github.com/jongacnik/monolazy)
-- [jongacnik/monoimage](https://github.com/jongacnik/monoimage)
+- [monoeq/monolazy](https://github.com/monoeq/monolazy)
+- [monoeq/monoimage](https://github.com/monoeq/monoimage)
