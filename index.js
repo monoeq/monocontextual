@@ -5,13 +5,13 @@ var inlineStyle = require('inline-style')
 module.exports = class MonoContextual extends Nanocomponent {
   constructor () {
     super()
-    
-    this.handleResize = () => this.rerender()
+
+    this.handleResize = throttle(() => this.rerender(), 100)
   }
 
   load (element) {
     if (this.props.disabled) return
-    this.handleResize()
+    this.rerender()
     window.addEventListener('resize', this.handleResize)
   }
 
@@ -22,11 +22,11 @@ module.exports = class MonoContextual extends Nanocomponent {
   getInnerDimensions (element) {
     var dimensions = {}
     var styles = getComputedStyle(element)
-    dimensions.width = element.clientWidth 
-      - parseFloat(styles.paddingLeft) 
+    dimensions.width = element.clientWidth
+      - parseFloat(styles.paddingLeft)
       - parseFloat(styles.paddingRight)
-    dimensions.height = element.clientHeight 
-      - parseFloat(styles.paddingTop) 
+    dimensions.height = element.clientHeight
+      - parseFloat(styles.paddingTop)
       - parseFloat(styles.paddingBottom)
     dimensions.ratio = (dimensions.height / dimensions.width) * 100
     return dimensions
@@ -54,7 +54,7 @@ module.exports = class MonoContextual extends Nanocomponent {
         styles.width = elWidth + 'px'
         styles.marginLeft = (parentD.width - elWidth) / 2 + 'px'
       }
-      
+
       return inlineStyle(styles)
     }
   }
@@ -66,5 +66,17 @@ module.exports = class MonoContextual extends Nanocomponent {
   createElement (props, children) {
     this.props = props
     return html`<div style="${this.inlineStyles()}">${children}</div>`
+  }
+}
+
+function throttle(fn, timeout) {
+  var timer = null
+  return function () {
+    if (!timer) {
+      timer = setTimeout(function() {
+        fn()
+        timer = null
+      }, timeout)
+    }
   }
 }
